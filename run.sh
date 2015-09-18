@@ -1,8 +1,7 @@
 #!/bin/sh
 
 cd /app/
-# ./put-record.rb
-echo "test"
+./put-record.rb
 if [ $? = "0" ];then
   sleep 3
   cd /app/
