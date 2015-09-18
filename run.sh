@@ -3,7 +3,7 @@
 cd /app/
 ./put-record.rb
 if [ $? = "0" ];then
-  sleep 
+  sleep 3
   cd /app/
   ./query-item.rb
   if [ ! $? = "0" ];then
