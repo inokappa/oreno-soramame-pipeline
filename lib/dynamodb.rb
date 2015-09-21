@@ -4,10 +4,11 @@ require 'aws-sdk'
 require 'json'
 require './lib/put-s3'
 require './lib/plot-graph'
+require './lib/generate-json'
 
 def dynamodb
   Aws::DynamoDB::Client.new(
-    # endpoint: ENV['DYNAMODB_ENDPOINT'], 
+    endpoint: ENV['DYNAMODB_ENDPOINT'], 
     # region: 'ap-northeast-1'
     # access_key_id: ENV['AWS_ACCESS_KEY'],
     # secret_access_key: ENV['AWS_SECRET_KEY'], 
@@ -80,6 +81,7 @@ def query_item(table_name, mon_st_code, check_date_time, date)
     },
   })
   
+  # p result.last_evaluated_key
   data_points = []
   check_points = []
   check_station_code = ""
@@ -88,31 +90,35 @@ def query_item(table_name, mon_st_code, check_date_time, date)
 
   result.items.each do |item|
     parsed_item = JSON.parse(item['document'])
+    #
     check_points << parsed_item['CHECK_TIME']
     data_points << parsed_item['PM2.5'].to_f
+    #
     check_station_code = item['mon_st_code']
     check_station = parsed_item['mon_st_name']
-    puts "#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}"
+    #
+    # puts "#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}"
   end
-  plot_graph(check_points, data_points, 'PM2.5', check_station, check_station_code, date)
+  # plot_graph(check_points, data_points, 'PM2.5', check_station, check_station_code, date)
+  generate_data(check_points, data_points, 'PM2.5', check_station, check_station_code, date)
 end
 
-def get_mon_st_codes(table_name, check_date_time)
-  result = dynamodb.scan(
-    table_name: table_name,
-    select: "ALL_ATTRIBUTES",
-    filter_expression: "CHECK_DATE_TIME >= :v_check_date_time",
-    expression_attribute_values: {
-      ":v_check_date_time" => check_date_time,
-    },
-  )
-  
-  codes = []
-  result.items.each do |item|
-    codes << item['mon_st_code']
-  end
-  return codes.uniq
-end
+#def get_mon_st_codes(table_name, check_date_time)
+#  result = dynamodb.scan(
+#    table_name: table_name,
+#    select: "ALL_ATTRIBUTES",
+#    filter_expression: "CHECK_DATE_TIME >= :v_check_date_time",
+#    expression_attribute_values: {
+#      ":v_check_date_time" => check_date_time,
+#    },
+#  )
+#  
+#  codes = []
+#  result.items.each do |item|
+#    codes << item['mon_st_code']
+#  end
+#  return codes.uniq
+#end
 
 #
 # For debug
@@ -125,14 +131,30 @@ def count_item(table_name)
   return result.items.count
 end
 #
-def scan_item(table_name, check_date_time)
-  result = dynamodb.scan(
+# def scan_item(table_name, check_date_time)
+def get_mon_st_codes(table_name, check_date_time)
+  result = []
+  result1 = dynamodb.scan(
     table_name: table_name,
-    select: "ALL_ATTRIBUTES",
-    filter_expression: "CHECK_DATE_TIME >= :v_check_date_time",
-    expression_attribute_values: {
-      ":v_check_date_time" => check_date_time,
-    },
+    select: "SPECIFIC_ATTRIBUTES",
+    attributes_to_get: ["mon_st_code"],
   )
-  return result
+
+  if result1.last_evaluated_key then
+    result2 = dynamodb.scan(
+      table_name: table_name,
+      select: "SPECIFIC_ATTRIBUTES",
+      attributes_to_get: ["mon_st_code"],
+      exclusive_start_key: { "CHECK_DATE_TIME"=>result1.last_evaluated_key['CHECK_DATE_TIME'], "mon_st_code" => result1.last_evaluated_key['mon_st_code'] }
+    )
+    result = result1.items.concat(result2.items)
+  else
+    result = result1.items
+  end
+
+  codes = []
+  result.each do |item|
+    codes << item['mon_st_code']
+  end
+  return codes.uniq
 end

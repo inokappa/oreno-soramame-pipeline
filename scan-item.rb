@@ -5,5 +5,5 @@ require './lib/dynamodb'
 #
 # For debug
 #
-dynamodb_table = 'soramame'
-p scan_item(dynamodb_table, '2015-09-16')
+table_name = ARGV[0]
+puts scan_item(table_name, '2015-09-19')

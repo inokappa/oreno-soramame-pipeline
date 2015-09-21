@@ -2,9 +2,10 @@
 
 require './lib/dynamodb'
 
+table_name = ARGV[0]
 # 
 begin 
-  resp = delete_table('soramame')
+  resp = delete_table(table_name)
 rescue
   print "Error: #$!\n"
 else

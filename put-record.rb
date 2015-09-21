@@ -11,7 +11,7 @@ require './lib/dynamodb'
 #
 # Get soramame content and call `post_to_dynamodb`
 #
-def get_soramame_content(uri, check_date_time, check_time)
+def get_soramame_content(uri, check_date_time, check_time, table_name)
   # Set Charset
   charset = nil
   # charset = 'UTF-8'
@@ -34,7 +34,7 @@ def get_soramame_content(uri, check_date_time, check_time)
     ary = [header,row].transpose
     h = Hash[*ary.flatten]
     # p h
-    post_to_dynamodb('soramame', h)
+    post_to_dynamodb(table_name, h)
   end
 end
 
@@ -54,6 +54,7 @@ end
 #
 # Main
 #
+table_name = ARGV[0]
 d = (Date.today - 1)
 (1..24).each do |h| 
   h = "%02d" % h
@@ -62,6 +63,6 @@ d = (Date.today - 1)
   p uri
   p check_date_time
   # get_raw_soramame_content(uri)
-  get_soramame_content(uri, check_date_time, h)
+  get_soramame_content(uri, check_date_time, h, table_name)
 end
 

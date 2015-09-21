@@ -2,9 +2,10 @@
 
 require './lib/dynamodb'
 
+table_name = ARGV[0]
 # 
 begin
-  resp = create_table('soramame')
+  resp = create_table(table_name)
 rescue
   print "Error: #$!\n"
 else
