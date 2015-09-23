@@ -8,7 +8,7 @@ require './lib/generate-json'
 
 def dynamodb
   Aws::DynamoDB::Client.new(
-    endpoint: ENV['DYNAMODB_ENDPOINT'], 
+    # endpoint: ENV['DYNAMODB_ENDPOINT'], 
     # region: 'ap-northeast-1'
     # access_key_id: ENV['AWS_ACCESS_KEY'],
     # secret_access_key: ENV['AWS_SECRET_KEY'], 
