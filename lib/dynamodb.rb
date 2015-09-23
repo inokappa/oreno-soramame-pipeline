@@ -58,8 +58,8 @@ def create_table(table_name)
       },
     ],
     provisioned_throughput: {
-      read_capacity_units: 1,
-      write_capacity_units: 1,
+      read_capacity_units: 50,
+      write_capacity_units: 50,
     },
   })
 end
