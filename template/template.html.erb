@@ -56,7 +56,7 @@
       <div class="starter-template">
 
       <% urls.each do |url| %>
-       <img src="<%= url %>" class="img-thumbnail">
+       <a href="<%= url[1] %>"><img src="<%= url[0] %>" class="img-thumbnail"></a>
       <% end %>
 
       </div>
