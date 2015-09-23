@@ -97,41 +97,12 @@ def query_item(table_name, mon_st_code, check_date_time, date)
     check_station_code = item['mon_st_code']
     check_station = parsed_item['mon_st_name']
     #
-    # puts "#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}"
+    puts "#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}"
   end
-  # plot_graph(check_points, data_points, 'PM2.5', check_station, check_station_code, date)
+
   generate_data(check_points, data_points, 'PM2.5', check_station, check_station_code, date)
 end
 
-#def get_mon_st_codes(table_name, check_date_time)
-#  result = dynamodb.scan(
-#    table_name: table_name,
-#    select: "ALL_ATTRIBUTES",
-#    filter_expression: "CHECK_DATE_TIME >= :v_check_date_time",
-#    expression_attribute_values: {
-#      ":v_check_date_time" => check_date_time,
-#    },
-#  )
-#  
-#  codes = []
-#  result.items.each do |item|
-#    codes << item['mon_st_code']
-#  end
-#  return codes.uniq
-#end
-
-#
-# For debug
-#
-def count_item(table_name)
-  result = dynamodb.scan(
-    table_name: table_name,
-    select: "ALL_ATTRIBUTES", 
-  )
-  return result.items.count
-end
-#
-# def scan_item(table_name, check_date_time)
 def get_mon_st_codes(table_name, check_date_time)
   result = []
   result1 = dynamodb.scan(
@@ -157,4 +128,15 @@ def get_mon_st_codes(table_name, check_date_time)
     codes << item['mon_st_code']
   end
   return codes.uniq
+end
+
+#
+# For debug
+#
+def count_item(table_name)
+  result = dynamodb.scan(
+    table_name: table_name,
+    select: "ALL_ATTRIBUTES", 
+  )
+  return result.items.count
 end

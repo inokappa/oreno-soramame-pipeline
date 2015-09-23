@@ -23,10 +23,9 @@ else
   exit 1
 fi
 #
-cd /app
-./delete-table.rb ${TABLE_NAME}
-if [ ! $? = "0" ];then
-  echo "put-record.rb fail."
-  exit 1
-fi
-
+#cd /app
+#./delete-table.rb ${TABLE_NAME}
+#if [ ! $? = "0" ];then
+#  echo "put-record.rb fail."
+#  exit 1
+#fi

@@ -28,4 +28,4 @@ end
 #
 # Generage HTML
 #
-p generate_html(urls, date)
+p generate_html(urls, date.strftime("%Y-%m-%d"))
