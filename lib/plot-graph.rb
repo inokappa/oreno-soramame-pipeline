@@ -5,9 +5,10 @@ require 'json'
 
 def generate_data(check_points, points, title, check_station, check_station_code, date)
   #
-  toJson = []
-  toJson = [check_points, points].transpose
-  h = Hash[*toJson.flatten]
+  time_series = []
+  time_series = [check_points, points].transpose
+  time_series_hash = Hash[*time_series.flatten]
+  h = { "check_station" => check_station, "check_station_code" => check_station_code, "check_date" => date, "time_series" => time_series_hash }
   # put_json_s3(h.to_json, date, 'PM2.5', check_station_code)
 
   #
