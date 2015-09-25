@@ -1,6 +1,6 @@
 ### 最新情報
 
-- http://pm25.test.inokara.com/kyusyu/2015-09-22.html
+- http://pm25.test.inokara.com/kyusyu/2015-09-24.html
 
 ### サイトの更新諸々について
 
