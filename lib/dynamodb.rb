@@ -8,7 +8,7 @@ require './lib/generate-json'
 
 def dynamodb
   endpoint = 'http://' + ENV['DYNAMO_PORT_7777_TCP_ADDR'] + ':7777'
-  puts endpoint
+  # puts endpoint
   Aws::DynamoDB::Client.new(
     endpoint: endpoint, 
     # region: 'ap-northeast-1'
@@ -99,7 +99,7 @@ def query_item(table_name, mon_st_code, check_date_time, date)
     check_station_code = item['mon_st_code']
     check_station = parsed_item['mon_st_name']
     #
-    puts "#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}"
+    # puts "#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}"
   end
 
   generate_data(check_points, data_points, 'PM2.5', check_station, check_station_code, date)
