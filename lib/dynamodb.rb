@@ -7,7 +7,7 @@ require './lib/plot-graph'
 require './lib/generate-json'
 
 def dynamodb
-  endpoint = 'http://' + ENV['BUILD_DYNAMO_1_PORT_7777_TCP_ADDR'] + ':7777'
+  endpoint = 'http://' + ENV['DYNAMO_PORT_7777_TCP_ADDR'] + ':7777'
   puts endpoint
   Aws::DynamoDB::Client.new(
     endpoint: endpoint, 
