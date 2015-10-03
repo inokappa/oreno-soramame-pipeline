@@ -54,6 +54,7 @@ end
 #
 # Main
 #
+puts ENV['DYNAMODB_ENDPOINT']
 table_name = ARGV[0]
 d = (Date.today - 1)
 (1..24).each do |h| 
