@@ -7,8 +7,10 @@ require './lib/plot-graph'
 require './lib/generate-json'
 
 def dynamodb
+  endpoint = 'http://' + ENV['BUILD_DYNAMO_1_PORT_7777_TCP_ADDR'] + ':7777'
+  puts endpoint
   Aws::DynamoDB::Client.new(
-    endpoint: 'http://' + ENV['BUILD_DYNAMO_1_PORT_7777_TCP_ADDR'] + ':7777', 
+    endpoint: endpoint, 
     # region: 'ap-northeast-1'
     # access_key_id: ENV['AWS_ACCESS_KEY'],
     # secret_access_key: ENV['AWS_SECRET_KEY'], 
