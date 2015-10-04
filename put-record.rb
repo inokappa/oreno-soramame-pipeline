@@ -54,15 +54,15 @@ end
 #
 # Main
 #
-puts ENV['DYNAMODB_ENDPOINT']
+puts "Put to DynamoDB Local..."
 table_name = ARGV[0]
 d = (Date.today - 1)
 (1..24).each do |h| 
   h = "%02d" % h
   check_date_time = d.strftime("%Y-%m-%d") + " #{h}:00:00"
   uri = 'http://soramame.taiki.go.jp/Gazou/Hyou/AllMst/' + d.strftime("%Y%m%d") + '/hb' + d.strftime("%Y%m%d") + h + '08.html'
-  p uri
-  p check_date_time
+  # p uri
+  # p check_date_time
   # get_raw_soramame_content(uri)
   get_soramame_content(uri, check_date_time, h, table_name)
 end
