@@ -2,6 +2,7 @@
 
 require 'aws-sdk'
 require 'json'
+require 'logger'
 require './lib/put-s3'
 require './lib/plot-graph'
 require './lib/generate-json'
@@ -11,11 +12,14 @@ def dynamodb
   # puts endpoint
   Aws::DynamoDB::Client.new(
     endpoint: endpoint, 
-    # region: 'ap-northeast-1'
     # access_key_id: ENV['AWS_ACCESS_KEY'],
     # secret_access_key: ENV['AWS_SECRET_KEY'], 
     region: ENV['AWS_REGION'] 
   )
+end
+
+def logging
+  Logger.new(STDOUT)
 end
 
 def post_to_dynamodb(table, data)
@@ -99,7 +103,7 @@ def query_item(table_name, mon_st_code, check_date_time, date)
     check_station_code = item['mon_st_code']
     check_station = parsed_item['mon_st_name']
     #
-    # puts "#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}"
+    logging.info("#{date} - #{parsed_item['CHECK_TIME']} / #{check_station} / #{parsed_item['PM2.5'].to_f}")
   end
 
   generate_data(check_points, data_points, 'PM2.5', check_station, check_station_code, date)
