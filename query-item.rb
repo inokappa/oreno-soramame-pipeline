@@ -1,7 +1,12 @@
 #!/usr/bin/env ruby
 
+require 'logger'
 require './lib/dynamodb'
 require './lib/generate-html'
+
+def logging
+  Logger.new(STDOUT)
+end
 
 table_name = ARGV[0]
 date = Date.today - 1
@@ -20,6 +25,7 @@ codes = get_mon_st_codes(table_name, date.strftime("%Y-%m-%d"))
 #
 # Upload image and generate image URL.
 #
+logging.info("Query from DynamoDB Local...")
 urls = []
 codes.each do |code|
   urls << query_item(table_name, code, date.strftime("%Y-%m-%d"), date.strftime("%Y%m%d"))
@@ -28,4 +34,5 @@ end
 #
 # Generage HTML
 #
-p generate_html(urls, date.strftime("%Y-%m-%d"))
+url = generate_html(urls, date.strftime("%Y-%m-%d"))
+logging.info("result_url: " + url)
